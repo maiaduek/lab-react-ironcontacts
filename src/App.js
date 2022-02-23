@@ -5,6 +5,8 @@ import producerContacts from './contacts.json'
 function App() {
   let contactsArr = producerContacts.slice(0, 5)
   const [contacts, setContacts] = React.useState(contactsArr)
+  const [ascending, setAscending] = React.useState(true);
+
 
   const addContact = () => {
     let arrClone = [...producerContacts]
@@ -19,8 +21,13 @@ function App() {
 
   const sortByName = () => {
     let cloned = [...contacts]
-    cloned.sort((a, b) => a.name.localeCompare(b.name));
+    if (ascending) {
+      cloned.sort((a, b) => a.name.localeCompare(b.name));
+    } else {
+      cloned.sort((a, b) => b.name.localeCompare(a.name));
+    }
     setContacts(cloned)
+    setAscending(!ascending)
   }
 
   const sortByPop = () => {
@@ -38,59 +45,64 @@ function App() {
   
   return (
     <div className="App">
-    <h1>IronContacts</h1>
+    <h1 style={{fontSize:'40px', color: 'cadetBlue'}}>IronContacts</h1>
       <button onClick={addContact} style={{
         backgroundColor: 'chocolate', 
         color: 'blanchedAlmond', margin: '10px', 
         borderRadius: '5px',
-        padding: '10px'
+        padding: '10px',
+        fontWeight: 'bolder'
         }}>Add Random Contact</button>
       <button onClick={sortByName} style={{
         backgroundColor: 'chocolate', 
         color: 'blanchedAlmond', margin: '10px', 
         borderRadius: '5px',
-        padding: '10px'
-        }}>Sort by Name</button>
+        padding: '10px',
+        fontWeight: 'bolder'
+        }}>Sort by Name ({ascending ? "ascending" : "descending"})</button>
       <button onClick={sortByPop} style={{
         backgroundColor: 'chocolate', 
         color: 'blanchedAlmond', margin: '10px', 
         borderRadius: '5px',
-        padding: '10px'
+        padding: '10px',
+        fontWeight: 'bolder'
         }}>Sort by Popularity</button>
-      <table>
-      <tr>
-        <th style={{width: '100px'}}>Picture</th>
-        <th style={{width: '100px'}}>Name</th>
-        <th style={{width: '100px'}}>Popularity</th>
-        <th style={{width: '100px'}}>Won Oscar</th>
-        <th style={{width: '100px'}}>Won Emmy</th>
-        <th style={{width: '100px'}}>Remove</th>
-      </tr>
-      {contacts.map((celeb) => {
-          return (
-            <tr style={{backgroundColor: "blanchedAlmond"}}>
-              <td>
-                <img src={celeb.pictureUrl} style={{height: '100px'}}/>
-              </td>
-              <td>
-                <p>{celeb.name}</p>
-              </td>
-              <td>
-                <p>{celeb.popularity}</p>
-              </td>
-              <td>
-                {celeb.wonOscar ? "🏆 " : ' '}
-              </td>
-              <td>
-                {celeb.wonEmmy ? "🏆 " : ' '}
-              </td>
-              <td>
-                <button onClick={() => deleteCeleb(celeb.id)} style={{backgroundColor: 'chocolate', color: 'blanchedAlmond', margin: '10px', borderRadius: '5px', padding: '10px'}}>Delete</button>
-              </td>
-            </tr>
-          )
-        })
-      }
+      <table style={{marginLeft: '145px', marginTop: '50px'}}>
+        <tbody>
+          <tr>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Picture</th>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Name</th>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Popularity</th>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Won Oscar</th>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Won Emmy</th>
+            <th style={{width: '100px', color: 'cadetBlue', fontSize: '18px'}}>Remove</th>
+          </tr>
+          {contacts.map((celeb, i) => {
+              return (
+                <tr style={{backgroundColor: "blanchedAlmond"}} key={i}>
+                  <td>
+                    <img src={celeb.pictureUrl} style={{height: '100px'}}/>
+                  </td>
+                  <td>
+                    <p style={{color: 'cadetBlue'}}>{celeb.name}</p>
+                  </td>
+                  <td>
+                    <p style={{color: 'cadetBlue'}}>{celeb.popularity}</p>
+                  </td>
+                  <td>
+                    {celeb.wonOscar ? "🏆 " : ' '}
+                  </td>
+                  <td>
+                    {celeb.wonEmmy ? "🏆 " : ' '}
+                  </td>
+                  <td>
+                    <button onClick={() => deleteCeleb(celeb.id)} style={{backgroundColor: 'chocolate', color: 'blanchedAlmond', margin: '10px', borderRadius: '5px', padding: '10px', fontWeight: 'bolder'}}>Delete</button>
+                  </td>
+                </tr>
+              )
+            })
+          }
+        </tbody>
       </table>
     </div>
   )
